@@ -19,10 +19,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       lastName: DataTypes.STRING,
       email: DataTypes.STRING,
+      newTime: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
+
     {
       sequelize,
-      paranoid:true,
+      paranoid: true,
       modelName: "User2",
     }
   );

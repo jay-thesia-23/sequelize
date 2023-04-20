@@ -16,6 +16,13 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+sequelize.authenticate().then(()=>{
+  console.log("Connection with orm is done")
+}).catch((err)=>{
+  console.error("unable to connect: ",err)
+})
+
+
 fs
   .readdirSync(__dirname)
   .filter(file => {
