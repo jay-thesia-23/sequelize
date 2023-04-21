@@ -2,17 +2,17 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('paranoidDeletes', {
+    await queryInterface.createTable('players', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      firstName: {
         type: Sequelize.STRING
       },
-      age: {
+      lastName: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -25,9 +25,7 @@ module.exports = {
       }
     });
   },
-
-  
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('paranoidDeletes');
+    await queryInterface.dropTable('players');
   }
 };
