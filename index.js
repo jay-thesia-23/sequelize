@@ -11,10 +11,10 @@ var player=require("./models").player
 var coach=require("./models").coach
 
 
-team.hasMany(player,{foreign_key:"teamId"})
-player.belongsTo(team)
+// team.hasMany(player,{foreign_key:"teamId"})
+// player.belongsTo(team)
 
-player.sync()
+// player.sync()
 
 
 //random first name generate
@@ -87,7 +87,7 @@ app.get("/showplayer",async (req,res)=>{
     let teamPlayer=await team.findAll({
     
       include:[{model:player}],
-      attributes:["player.firstName"]
+     
     })
 
     return res.status(200).json({
@@ -416,7 +416,10 @@ app.get("/pagenation", async (req, res) => {
 });
 
 app.get("/search", async (req, res) => {
-  let search = req.query.search || "";
+  let fname = req.query.fname || "";
+  let lname=req.query.lname || ""
+  let email= req.query.email || ""
+
   let colName = req.query.colName;
   console.log(colName);
 
@@ -424,30 +427,29 @@ app.get("/search", async (req, res) => {
     colName == "firstName"
       ? {
           firstName: {
-            [Op.like]: `%${search}%`,
+            [Op.like]: `%${fname}%`,
           },
         }
       : {
           lastName: {
-            [Op.like]: `%${search}%`,
+            [Op.like]: `%${lname}%`,
           },
         };
 
-  console.log(obj, "seelect");
-  console.log(search);
+
 
   try {
     let dataSearch = await User2.findAll({
       where: {
         [Op.and]:{
           firstName: {
-            [Op.like]: `%${search}%`,
+            [Op.like]: `%${fname}%`,
           },
           lastName:{
-            [Op.like]: `%${search}%`,
+            [Op.like]: `%${lname}%`,
           },
           email:{
-            [Op.like]: `%${search}%`,
+            [Op.like]: `%${email}%`,
           }
 
         }
@@ -464,7 +466,6 @@ app.get("/search", async (req, res) => {
 
 
 //literal to run the raw query
-
 app.get("/literal", (req, res) => {
   User.findAll({
     attributes: [],

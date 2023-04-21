@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'team',
   });
 
+  team.associate = function (models) {
+    team.hasMany(models.player, { foreignKey: "teamId" });
+  };
  
   return team;
 };

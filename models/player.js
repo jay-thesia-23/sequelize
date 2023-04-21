@@ -1,5 +1,7 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Model, TableHints } = require("sequelize");
+const team = require("./team");
+
 module.exports = (sequelize, DataTypes) => {
   class player extends Model {
     /**
@@ -7,9 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
-    }
   }
   player.init(
     {
@@ -21,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "player",
     }
   );
+
+  player.associate=function(models){
+    player.belongsTo(models.team,{foreignKey:'teamId'})
+  }
 
 
   return player;
