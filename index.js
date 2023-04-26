@@ -10,7 +10,8 @@ var team = require("./models").team;
 var player = require("./models").player;
 var song = require("./models").song;
 var playlist = require("./models").playlist;
-var song_playlist=require("./models").song_playlist
+var userScope = require("./models").userscope;
+
 //random first name generate
 const fname = [
   "vishwa",
@@ -73,10 +74,35 @@ for (let i = 0; i < 100; i++) {
   ranEmailname.push(email[Math.floor(Math.random() * email.length)]);
 }
 
+//scope
+app.post("/scope", async (req, res) => {
+
+  
+  /*
+  try {
+    let above18 = await userScope.scope("showUserAbove18").findAll({});
+    res.json(above18);
+
+  }
+  */
+  
+  try {
+    let above18 = await userScope.findAll({});
+
+    console.log(above18);
+    res.json(above18);
+    
+  }
+  
+  catch (error) {
+
+    console.log(error,"eror");
+    res.json(error);
+  }
+});
+
 //ManyToMany
 app.post("/manytomany", async (req, res) => {
-
-
   try {
     /*
   let dataMany=await song.create({
@@ -125,7 +151,6 @@ app.post("/manytomany", async (req, res) => {
         rank: 1,
         size: 6,
         songs: [
-     
           {
             songName: "snap",
             artistName: "xyz",
@@ -135,8 +160,8 @@ app.post("/manytomany", async (req, res) => {
         ],
       },
       {
-        include: [{model:song}]
-      },
+        include: [{ model: song }],
+      }
     );
 
     res.status(200).json({
@@ -144,8 +169,7 @@ app.post("/manytomany", async (req, res) => {
       data: dataMany,
     });
   } catch (error) {
-
-    console.log(error,"it is errlr");
+    console.log(error, "it is errlr");
     res.status(400).json({
       success: false,
       message: error,
