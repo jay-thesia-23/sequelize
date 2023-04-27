@@ -12,9 +12,7 @@ var player = require("./models").player;
 var song = require("./models").song;
 var playlist = require("./models").playlist;
 var userScope = require("./models").userscope;
-var Image = require("./models").Image;
-var video = require("./models").Video;
-var Comment = require("./models").Comment;
+
 
 //random first name generate
 const fname = [

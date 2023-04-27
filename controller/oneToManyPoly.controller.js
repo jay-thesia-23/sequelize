@@ -1,4 +1,4 @@
-var express = require("express");
+
 var Image = require("../models").Image;
 var Comment = require("../models").Comment;
 var Video = require("../models").Video;
