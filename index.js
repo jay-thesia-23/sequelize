@@ -3,6 +3,7 @@ const express = require("express");
 var app = express();
 app.use(express.json());
 const { Op, QueryInterface, DataTypes, Model } = require("sequelize");
+
 const { sequelize } = require("./models");
 var User = require("./models").User;
 var User2 = require("./models").User2;
@@ -11,6 +12,9 @@ var player = require("./models").player;
 var song = require("./models").song;
 var playlist = require("./models").playlist;
 var userScope = require("./models").userscope;
+var Image = require("./models").Image;
+var video = require("./models").Video;
+var Comment = require("./models").Comment;
 
 //random first name generate
 const fname = [
@@ -74,10 +78,11 @@ for (let i = 0; i < 100; i++) {
   ranEmailname.push(email[Math.floor(Math.random() * email.length)]);
 }
 
+var oneToManyPoly = require("./router/oneToManyPoly.router");
+app.use(oneToManyPoly);
+
 //scope
 app.post("/scope", async (req, res) => {
-
-  
   /*
   try {
     let above18 = await userScope.scope("showUserAbove18").findAll({});
@@ -85,18 +90,14 @@ app.post("/scope", async (req, res) => {
 
   }
   */
-  
+
   try {
     let above18 = await userScope.findAll({});
 
     console.log(above18);
     res.json(above18);
-    
-  }
-  
-  catch (error) {
-
-    console.log(error,"eror");
+  } catch (error) {
+    console.log(error, "eror");
     res.json(error);
   }
 });
@@ -506,37 +507,45 @@ app.get("/search", async (req, res) => {
   let email = req.query.email || "";
 
   let colName = req.query.colName;
+  let type = req.query.type || "and";
   console.log(colName);
 
-  let obj =
-    colName == "firstName"
-      ? {
-          firstName: {
-            [Op.like]: `%${fname}%`,
-          },
-        }
-      : {
-          lastName: {
-            [Op.like]: `%${lname}%`,
-          },
-        };
-
   try {
-    let dataSearch = await User2.findAll({
-      where: {
-        [Op.and]: {
-          firstName: {
-            [Op.like]: `%${fname}%`,
-          },
-          lastName: {
-            [Op.like]: `%${lname}%`,
-          },
-          email: {
-            [Op.like]: `%${email}%`,
+    let dataSearch;
+
+    if (type == "or") {
+      dataSearch = await User2.findAll({
+        where: {
+          [Op.or]: {
+            firstName: {
+              [Op.like]: `${fname}`,
+            },
+            lastName: {
+              [Op.like]: `${lname}`,
+            },
+            email: {
+              [Op.like]: `${email}`,
+            },
           },
         },
-      },
-    });
+      });
+    } else {
+      dataSearch = await User2.findAll({
+        where: {
+          [Op.and]: {
+            firstName: {
+              [Op.like]: `%${fname}%`,
+            },
+            lastName: {
+              [Op.like]: `%${lname}%`,
+            },
+            email: {
+              [Op.like]: `%${email}%`,
+            },
+          },
+        },
+      });
+    }
 
     console.log(dataSearch, "data search");
 
