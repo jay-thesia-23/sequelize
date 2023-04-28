@@ -1,4 +1,3 @@
-
 var Image = require("../models").Image;
 var Comment = require("../models").Comment;
 var Video = require("../models").Video;
@@ -8,19 +7,20 @@ var Video = require("../models").Video;
 var polyInsert = async (req, res) => {
   let dataPoly;
   let type = req.params.type;
+  let { title, url, text } = req.body;
 
   console.log(type);
   try {
     if (type == "Image") {
       dataPoly = await Image.create({
-        title: "Tony pic 2",
-        url: "www.googe.com",
+        title,
+        url,
       });
     }
 
     if (type == "Video") {
       dataPoly = await Video.create({
-        text: "Zoo video",
+        text,
       });
     }
 
@@ -38,8 +38,10 @@ var polyInsertComment = async (req, res) => {
   let contentid = req.params.contentid;
   let type = req.params.type;
 
+  let { title } = req.body;
+
   dataPoly = await Comment.create({
-    title: "this my image or video",
+    title,
     commentId: contentid,
     commentType: type,
   });
@@ -50,11 +52,15 @@ var polyInsertComment = async (req, res) => {
 var polyDelete = async (req, res) => {
   let deleteIt;
   let type = req.params.type;
+
   try {
     if (type == "Image") {
-      let deleteIt = await Image.destroy({
-        where: { id: req.params.id },
-      });
+      deleteIt = await Image.destroy(
+        {
+          where: { id: req.params.id },
+        },
+      
+      );
 
       await Comment.destroy({
         where: {
@@ -62,16 +68,18 @@ var polyDelete = async (req, res) => {
         },
       });
     }
-    if (type == "Video") {
-      deleteIt = await Image.destroy({
-        where: { id: req.params.id },
-      });
 
-      await Comment.destroy({
-        where: {
-          commentId: req.params.id,
+    
+    if (type == "Video") {
+      deleteIt = await Video.destroy(
+        {
+          where: { id: req.params.id },
         },
-      });
+        // {
+        //   include: [{ model: Comment }],
+        // }
+      );
+
     }
 
     console.log(deleteIt);
@@ -100,9 +108,14 @@ var polyDeleteComment = async (req, res) => {
   }
 };
 
+var polyRecoverPost = async (req, res) => {
+  await Comment.restore();
+};
+
 module.exports = {
   polyInsert,
   polyInsertComment,
   polyDeleteComment,
   polyDelete,
+  polyRecoverPost,
 };

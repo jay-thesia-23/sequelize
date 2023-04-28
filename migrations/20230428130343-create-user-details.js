@@ -1,38 +1,36 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('songs', {
+    await queryInterface.createTable("userDetails", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-     
       },
-      songName: {
-        type: Sequelize.STRING
+      userId: {
+        type: Sequelize.INTEGER,
+        references: { model: "users", key: "id" },
+        onDelete: "CASCADE",
       },
-      artistName: {
-        type: Sequelize.STRING
+      mobileNum: {
+        type: Sequelize.STRING,
       },
-      releaseYear: {
-        type: Sequelize.DATEONLY
-      },
-      length: {
-        type: Sequelize.STRING
+      address: {
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('songs');
-  }
+    await queryInterface.dropTable("userDetails");
+  },
 };
