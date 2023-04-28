@@ -1,3 +1,5 @@
+
+
 var users = require("../models").users;
 var userDetails = require("../models").userDetails;
 
@@ -8,7 +10,7 @@ const insertDataPost = async (req, res) => {
     {
       name,
       username:userName,
-      userDetails: [
+      userDetail: [
         {
           mobileNum,
           address,
@@ -16,11 +18,38 @@ const insertDataPost = async (req, res) => {
       ],
     },
     {
-      include: [{
-        model: userDetails,
-      }],
+      include: userDetails
+      
     }
   );
+
+  return res.json(insertDataPost)
 };
 
-module.exports = { insertDataPost };
+
+const deleteDataPost=async (req,res)=>{
+  try {
+    const { userId } = req.params;
+    const results = await users.destroy({
+      where: {
+        id: userId,
+      },
+      cascade: true,
+      include: [{
+        model: userDetails,
+        cascade: true,
+      }],
+    });
+    return res.json(results)
+
+
+  } catch (e) {
+    console.log('error deleting user:', e);
+    return h.response('Failed:', e.message).code(500);
+  }
+}
+
+const updateDataUser=async (req,res)=>{
+
+}
+module.exports = { insertDataPost,deleteDataPost,updateDataUser };
