@@ -51,5 +51,6 @@ const deleteDataPost=async (req,res)=>{
 
 const updateDataUser=async (req,res)=>{
 
+  https://siddharth-lakhara.medium.com/understanding-sequelize-associations-part-1-one-to-one-1-1-mapping-897ce176caf9
 }
 module.exports = { insertDataPost,deleteDataPost,updateDataUser };
