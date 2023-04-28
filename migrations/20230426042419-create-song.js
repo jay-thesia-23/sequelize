@@ -2,17 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('paranoidDeletes', {
+    await queryInterface.createTable('songs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      songName: {
         type: Sequelize.STRING
       },
-      age: {
+      artistName: {
+        type: Sequelize.STRING
+      },
+      releaseYear: {
+        type: Sequelize.DATEONLY
+      },
+      length: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -26,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('paranoidDeletes');
+    await queryInterface.dropTable('songs');
   }
 };

@@ -9,7 +9,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "createTable":"npx sequelize-cli model:generate",
+    "dbMigrate":"npx sequelize-cli db:migrate",
+    "dbMigrateUndo":"npx sequelize-cli db:migrate:undo"
   },
   "author": "",
   "license": "ISC",

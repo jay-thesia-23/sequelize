@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "root",
-    "database": "ormDB",
+    "database": "ormDemo",
     "host": "localhost",
     "dialect": "mysql"
   },
