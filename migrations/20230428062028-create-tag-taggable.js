@@ -2,25 +2,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('playlists', {
+    await queryInterface.createTable('Tag_Taggables', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
-      
+        type: Sequelize.INTEGER
       },
-      playlistName: {
+      taggableId: {
+        type: Sequelize.INTEGER
+      },
+      taggableType: {
         type: Sequelize.STRING
-      },
-      totalSongs: {
-        type: Sequelize.INTEGER
-      },
-      rank: {
-        type: Sequelize.INTEGER
-      },
-      size: {
-        type: Sequelize.FLOAT
       },
       createdAt: {
         allowNull: false,
@@ -29,20 +22,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-
+      }
     });
-
-    // await queryInterface.addConstraint("playlists",{
-    //   references:{
-    //     field:"id",
-    //     table:"playlists"
-    //   },
-    //   type:"foreign key"
-
-    // })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('playlists');
+    await queryInterface.dropTable('Tag_Taggables');
   }
 };

@@ -18,20 +18,32 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Image",
-      paranoid:true,
-      onDelete: "CASCADE",
-      onUpdate: "CASCADE",
+      
     }
   );
-
 
   Image.associate = function (models) {
     Image.hasMany(models.Comment, {
       foreignKey: "commentId",
       constraints: false,
-      scope : {
-        commentType : 'Image'
-      }
+      scope: {
+        commentType: "Image",
+      },
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+  };
+
+  Image.associate = (models) => {
+    Image.belongsToMany(models.tag, {
+      through: {
+        model: models.Tag_Taggable,
+        scope: {
+          taggableType: "image",
+        },
+      },
+      foreignKey: "taggableId",
+      constraints: false,
     });
   };
 

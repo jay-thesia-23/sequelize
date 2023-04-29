@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+
+const {Op}=require("sequelize")
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -20,5 +22,13 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+
+  User.addScope("ageAbove30",{
+    where:{
+      age:{
+        [Op.gt]:30
+      }
+    }
+  })
   return User;
 };

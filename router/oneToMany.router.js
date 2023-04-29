@@ -1,10 +1,10 @@
 var express = require("express")
 
 const router = express.Router()
-var { showplayerGet, teamAddPost } = require("../controller/oneToMany.controller")
+var { showPlayerGet, teamAddPost } = require("../controller/oneToMany.controller")
 
-router.get("/showplayer", showplayerGet);
+router.get("/showplayer", showPlayerGet)
+router.post("/teamadd", teamAddPost)
 
-router.post("/team", teamAddPost)
 
 module.exports = router

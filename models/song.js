@@ -21,10 +21,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'song',
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   });
 
   song.associate=(models)=>{
-    song.belongsToMany(models.playlist,{through:"song_playlist"})
+    song.belongsToMany(models.playlist,{through:"song_playlist",foreignKey:"songId"},{onDelete: 'cascade' })
   }
 
   

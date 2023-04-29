@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Video extends Model {
     /**
@@ -13,24 +11,42 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Video.init({
-    text: DataTypes.TEXT
-  }, {
-    sequelize,
-    modelName: 'Video',
-    paranoid:true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  });
+  Video.init(
+    {
+      text: DataTypes.TEXT,
+    },
+    {
+      sequelize,
+      modelName: "Video",
+   
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    }
+  );
 
   Video.associate = function (models) {
     Video.hasMany(models.Comment, {
       foreignKey: "commentId",
       constraints: false,
-      scope : {
-        commentType : 'Video'
-      }
+      scope: {
+        commentType: "Video",
+      },
     });
   };
+
+  Video.associate = (models) => {
+    Video.belongsToMany(models.tag, {
+      through: {
+        model: models.Tag_Taggable,
+
+        scope: {
+          taggableType: "video",
+        },
+      },
+      foreignKey: "taggableId",
+      constraints: false,
+    });
+  };
+
   return Video;
 };
