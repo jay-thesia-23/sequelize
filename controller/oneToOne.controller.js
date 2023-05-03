@@ -1,5 +1,3 @@
-
-
 var users = require("../models").users;
 var userDetails = require("../models").userDetails;
 
@@ -9,7 +7,7 @@ const insertDataPost = async (req, res) => {
   var insertDataPost = await users.create(
     {
       name,
-      username:userName,
+      username: userName,
       userDetail: [
         {
           mobileNum,
@@ -18,16 +16,14 @@ const insertDataPost = async (req, res) => {
       ],
     },
     {
-      include: userDetails
-      
+      include: userDetails,
     }
   );
 
-  return res.json(insertDataPost)
+  return res.json(insertDataPost);
 };
 
-
-const deleteDataPost=async (req,res)=>{
+const deleteDataPost = async (req, res) => {
   try {
     const { userId } = req.params;
     const results = await users.destroy({
@@ -35,22 +31,52 @@ const deleteDataPost=async (req,res)=>{
         id: userId,
       },
       cascade: true,
-      include: [{
-        model: userDetails,
-        cascade: true,
-      }],
+      include: [
+        {
+          model: userDetails,
+          cascade: true,
+        },
+      ],
     });
-    return res.json(results)
-
-
+    return res.json(results);
   } catch (e) {
-    console.log('error deleting user:', e);
-    return h.response('Failed:', e.message).code(500);
+    console.log("error deleting user:", e);
+    return h.response("Failed:", e.message).code(500);
   }
-}
+};
 
-const updateDataUser=async (req,res)=>{
+const updateDataUser = async (req, res) => {
+  var { userId } = req.params;
 
-  https://siddharth-lakhara.medium.com/understanding-sequelize-associations-part-1-one-to-one-1-1-mapping-897ce176caf9
-}
-module.exports = { insertDataPost,deleteDataPost,updateDataUser };
+  const { name, userName, mobileNum, address } = req.body;
+
+  const updateUsersObject = {
+    name,
+    userName,
+  };
+  const updateUsersDetailsObject = {
+    mobileNum,
+    address,
+  };
+
+  try {
+    const updatePromises = [];
+    const updateUsersPromise = users.update(updateUsersObject, {
+      where: { id: userId },
+    });
+    updatePromises.push(updateUsersPromise);
+
+    const updateUserDetailsPromise = userDetails.update(
+      updateUsersDetailsObject,
+      { where: { userId } }
+    );
+    updatePromises.push(updateUserDetailsPromise);
+
+    await Promise.all(updatePromises);
+    return "user records updates";
+  } catch (e) {
+    console.log("error updating user:", e);
+    return res.json({message:"error"+e})
+  }
+};
+module.exports = { insertDataPost, deleteDataPost, updateDataUser };
