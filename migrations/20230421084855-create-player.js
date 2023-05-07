@@ -18,7 +18,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       teamId:{
-        type:Sequelize.INTEGER
+        type:Sequelize.INTEGER,
+        references:{
+          model:"teams",
+          key:"id"
+        },
+        onDelete:"CASCADE"
       },
       createdAt: {
         allowNull: false,
@@ -31,14 +36,6 @@ module.exports = {
     });
 
 
-    await queryInterface.addConstraint("players",{
-      references:{
-        field:'id',
-        table:"teams"
-      },
-      type:'foreign key',
-      fields:['teamId']
-    })
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('players');

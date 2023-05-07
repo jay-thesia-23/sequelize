@@ -64,13 +64,19 @@ let teamAddPost = async (req, res) => {
 
 let deleteTeam = async (req, res) => {
   try {
-    let  teamId  = req.params.id;
+    let teamId = req.params.id;
     let answerDelete = await team.destroy({
       where: {
         id: teamId,
       },
+     
     },{
-        include:[{model:player}]
+      include: [
+        {
+          model: player,
+         
+        },
+      ],
     });
 
     return res.json(answerDelete);
@@ -81,4 +87,4 @@ let deleteTeam = async (req, res) => {
   }
 };
 
-module.exports = { showPlayerGet, teamAddPost ,deleteTeam};
+module.exports = { showPlayerGet, teamAddPost, deleteTeam };
