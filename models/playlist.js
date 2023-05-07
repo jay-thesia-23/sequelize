@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   playlist.associate=function(models){
-    playlist.belongsToMany(models.song,{through:"song_playlist",foreignKey: "playlistId"},{onDelete: 'cascade' })
+    playlist.belongsToMany(models.song,{through:"song_playlist",foreignKey: "playlistId"},{onDelete: 'CASCADE' })
   }
   
   return playlist;

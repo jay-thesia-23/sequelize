@@ -11,23 +11,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      users.hasOne(models.userDetails, { 
+        foreignKey: 'userId', 
+       
+        onDelete: 'CASCADE' 
+      });
     }
   }
   users.init({
-    username: DataTypes.STRING,
-    name: DataTypes.STRING
+    
+    name: DataTypes.STRING,
+    title:DataTypes.STRING,
+    age:DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'users',
   });
 
-  users.associate = function (models) {
-    users.hasOne(models.userDetails, { 
-      foreignKey: 'userId', 
-     
-      onDelete: 'CASCADE' 
-    });
-  };
-  
+ 
   return users;
 };

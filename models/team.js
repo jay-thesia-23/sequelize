@@ -19,11 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     city: DataTypes.STRING
   }, {
     sequelize,
+    onDelete:"CASCADE",
     modelName: 'team',
   });
 
   team.associate = function (models) {
-    team.hasMany(models.player, { foreignKey: "teamId" });
+    team.hasMany(models.player, { foreignKey: "teamId" },{onDelete:"CASCADE"});
   };
  
   return team;

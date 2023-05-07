@@ -6,7 +6,7 @@ var Video = require("../models").Video;
 var polyAddTagPost = async (req, res) => {
   let type = req.params.type;
 
-  let {title,url,name}=req.body
+  let {title,url,name,text}=req.body
 
   try {
     let imageWithTag;
@@ -28,7 +28,19 @@ var polyAddTagPost = async (req, res) => {
     }
 
     if (type == "Video") {
-
+      imageWithTag = await Video.create(
+        {
+          text,
+          tags: [
+            {
+              name,
+            },
+          ],
+        },
+        {
+          include: tag,
+        }
+      );
       
     }
 
